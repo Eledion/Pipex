@@ -10,71 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include "libft.h"
-#include "ft_printf.h"
+#include "pipex.h"
 
-char *findpath(char *cmd)
-{
-	char	*path_env;
-	char	*path;
-	char	**token;
-	int		i;
-	char	*temp;
-	path_env = getenv("PATH");
-	if (!path_env)
-	{
-		perror("Error: Path doesnt exist");
-		return (NULL);
-	}
-	token = ft_split(path_env, ':');
-	if (!token)
-		return (NULL);
-	i = 0;
-	while (token[i])
-	{
-		temp = ft_strjoin(token[i], "/");
-		path = ft_strjoin(temp, cmd);
-		free(temp);
-		if (access(path, X_OK) == 0)
-		{
-			free(token);
-			return (path);
-		}
-		free(path);
-		i++;
-	}
-	while (token[i])
-	{
-		free(token[i]);
-		i--;
-	}
-	free(token);
-	return (NULL);
-}
-
-void execute_command(char *cmd, char **args)
+void execute_command(char **args)
 {
 	char *path;
 
-	path = findpath(cmd);
+	path = find_path(args[0]);
 	if (!path)
 	{
-		ft_printf("Error: comando no encontrado");
+		perror("Error: command doesnt found");
 		exit(EXIT_FAILURE);
 	}
 	execve(path, args, NULL);
-	perror("Error en execve");
+	perror("Error on execve");
 	free(path);
 	exit(EXIT_FAILURE);
-}
-
-int	main()
-{
-	char *args[] = {"ls", "-l", NULL};
-	execute_command("ls", args);
-	return (0);
 }
