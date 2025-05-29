@@ -9,10 +9,12 @@
 # include <string.h>
 # include <errno.h>
 
+#include "../printf/ft_printf.h"
+
 void    pipex(char *infile, char *cmd1[], char *cmd2[], char *outfile);
-void    execute_child1(int fd[], char *cmd1[]);
-void    execute_child2(int fd[], char *cmd2[]);
-void    execute_command(char **cmd);
+pid_t execute_child1(int fd[], char **cmd1, char *infile);
+pid_t execute_child2(int fd[], char **cmd2, char *outfile);
+void execute_command(char **args, char **envp);
 char    *find_path(char *cmd);
 char    **get_paths_from_env();
 
@@ -22,6 +24,6 @@ char	*ft_strdup(const char *s);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char const *s1, char const *s2);
-void	ft_putstr_fd(char *s, int fd);
+void	*ft_memmove(void *dest, const void *src, unsigned int n);
 
 #endif

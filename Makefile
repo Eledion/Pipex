@@ -1,44 +1,47 @@
-# 🔹 Nombre del ejecutable
+# Definición del compilador y opciones
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -I includes -I printf -I utils
+
+# Archivos fuente de Pipex
+SRC_FILES = src/execute_command.c src/execute_child1.c src/execute_child2.c \
+            src/pipex.c src/main.c src/find_path.c
+
+# Archivos fuente de printf (todos los archivos que mencionaste)
+PRINTF_FILES = printf/ft_print_char.c printf/ft_print_hex.c printf/ft_print_int.c \
+               printf/ft_print_percent.c printf/ft_print_pointer.c printf/ft_print_string.c \
+               printf/ft_print_uint.c printf/ft_printf.c printf/ft_putchar_fd.c printf/ft_putnbr_fd.c
+
+# Archivos fuente de utils
+UTILS_FILES = utils/ft_split.c utils/ft_strjoin.c utils/ft_strlen.c utils/ft_strdup.c \
+              utils/ft_memcpy.c utils/ft_memmove.c utils/ft_substr.c utils/ft_putstr_fd.c
+
+# Archivos objeto generados a partir de los fuentes
+OBJS = $(SRC_FILES:.c=.o) $(PRINTF_FILES:.c=.o) $(UTILS_FILES:.c=.o)
+
+# Nombre del ejecutable
 NAME = pipex
 
-# 🔹 Compilador y flags de compilación
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
-
-# 🔹 Directorios
-SRC_DIR = src
-INCLUDE_DIR = includes
-UTILS_DIR = utils
-
-# 🔹 Archivos fuente y objetos
-SRC = $(SRC_DIR)/execute_child1.c $(SRC_DIR)/execute_child2.c $(SRC_DIR)/execute_command.c \
-      $(SRC_DIR)/find_path.c $(SRC_DIR)/main.c $(SRC_DIR)/pipex.c
-UTILS = $(UTILS_DIR)/ft_memcpy.c $(UTILS_DIR)/ft_split.c $(UTILS_DIR)/ft_strdup.c \
-        $(UTILS_DIR)/ft_substr.c $(UTILS_DIR)/ft_strlen.c $(UTILS_DIR)/ft_strjoin.c \
-        $(UTILS_DIR)/ft_putstr_fd.c
-OBJ = $(SRC:.c=.o) $(UTILS:.c=.o)
-
-# 🔹 Regla principal: Compilar el programa
+# Regla por defecto: compilar Pipex
 all: $(NAME)
 
-# 🔹 Compilar los archivos fuente y utils
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -I $(INCLUDE_DIR) -o $(NAME)
+# Regla para compilar Pipex
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
 
-# 🔹 Generar archivos .o a partir de los .c
+# Regla para compilar archivos objeto
 %.o: %.c
-	$(CC) $(CFLAGS) -I $(INCLUDE_DIR) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
-# 🔹 Eliminar archivos objeto
+# Limpiar archivos compilados
 clean:
-	rm -f $(OBJ)
+	rm -f $(OBJS)
 
-# 🔹 Eliminar archivos objeto y ejecutable
+# Limpiar todo, incluyendo el binario
 fclean: clean
 	rm -f $(NAME)
 
-# 🔹 Recompilar todo desde cero
+# Recompilar desde cero
 re: fclean all
 
-# 🔹 No hacer relink innecesario
+# PHONY para evitar conflictos con nombres de archivos
 .PHONY: all clean fclean re

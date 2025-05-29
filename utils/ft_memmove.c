@@ -1,22 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: danoguer <danoguer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/14 17:44:58 by danoguer          #+#    #+#             */
-/*   Updated: 2025/04/14 17:44:58 by danoguer         ###   ########.fr       */
+/*   Created: 2025/04/08 15:50:14 by danoguer          #+#    #+#             */
+/*   Updated: 2025/04/09 19:16:22 by danoguer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	ft_putstr_fd(char *s, int fd)
+void	*ft_memmove(void *dest, const void *src, unsigned int n)
 {
-	while (*s)
+	unsigned char	*chardest;
+	unsigned char	*charsrc;
+
+	if (!dest && !src)
+		return (NULL);
+	chardest = (unsigned char *)dest;
+	charsrc = (unsigned char *)src;
+	if (chardest < charsrc)
 	{
-		write(fd, s, 1);
-		s++;
+		while (n--)
+			*chardest++ = *charsrc++;
 	}
+	else
+	{
+		while (n > 0)
+		{
+			chardest[n - 1] = charsrc[n - 1];
+			n--;
+		}
+	}
+	return (dest);
 }

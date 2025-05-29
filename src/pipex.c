@@ -10,23 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "pipex.h"
 
 void pipex(char *infile, char *cmd1[], char *cmd2[], char *outfile)
 {
     int fd[2];
-    
-    (void) infile;
-    (void) outfile;
+    pid_t pid1, pid2;
+
     if (pipe(fd) == -1)
     {
-        perror("Error creating pipe");
+        perror("Error creando pipe");
         exit(EXIT_FAILURE);
     }
-    execute_child1(fd, cmd1);
-    execute_child2(fd, cmd2);
+    pid1 = execute_child1(fd, cmd1, infile);
+    pid2 = execute_child2(fd, cmd2, outfile);
+
     close(fd[0]);
     close(fd[1]);
-    wait(NULL);
-    wait(NULL);
+
+    waitpid(pid1, NULL, 0);  // 🔹 Corrección: Usa `waitpid()` en lugar de `wait()`
+    waitpid(pid2, NULL, 0);
 }
