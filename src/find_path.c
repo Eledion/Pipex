@@ -15,66 +15,57 @@
 #include <stdio.h>
 #include <unistd.h>
 
-// 🔹 Obtiene las rutas del entorno
 char **get_paths_from_env()
 {
     char *path_env = getenv("PATH");
     if (!path_env)
     {
-        ft_printf("Error: PATH variable missing\n", 2);
+        ft_putstr_fd("Error: PATH variable missing\n", 2);
         return NULL;
     }
-    return ft_split(path_env, ':'); // Separa por ':'
+    return ft_split(path_env, ':');
 }
 
-// 🔹 Busca el ejecutable en los directorios de $PATH
+char *find_executable_path(char *directory, char *cmd)
+{
+    char *temp = ft_strjoin(directory, "/");
+    char *path = ft_strjoin(temp, cmd);
+    free(temp);
+    if (access(path, X_OK) == 0)
+        return path;
+    free(path);
+    return NULL;
+}
+
 char *search_command_in_paths(char *cmd, char **paths)
 {
     char *path;
-    char *temp;
     int i = 0;
 
     while (paths[i])
     {
-        temp = ft_strjoin(paths[i], "/");
-        path = ft_strjoin(temp, cmd);
-        free(temp);
-        if (access(path, X_OK) == 0)
+        path = find_executable_path(paths[i], cmd);
+        if (path)
         {
-            int j = 0;
-            while (paths[j])
-            {
-                free(paths[j]);
-                j++;
-            }
+            while (paths[i])
+                free(paths[i++]);
             free(paths);
             return path;
         }
-        free(path);
         i++;
     }
-
-    // 🔹 Liberación segura si no se encuentra el ejecutable
-    i = 0;
     while (paths[i])
-    {
-        free(paths[i]);
-        i++;
-    }
+        free(paths[i++]);
     free(paths);
-    
     return NULL;
 }
 
-// 🔹 Encuentra la ruta del ejecutable, no los argumentos
 char *find_path(char *cmd)
 {
-    if (!cmd || !cmd[0]) // Validación de entrada
+    if (!cmd || !cmd[0])
         return NULL;
-    
     char **paths = get_paths_from_env();
     if (!paths)
         return NULL;
-
     return search_command_in_paths(cmd, paths);
 }

@@ -9,7 +9,6 @@
 # include <string.h>
 # include <errno.h>
 
-#include "../printf/ft_printf.h"
 
 void    pipex(char *infile, char *cmd1[], char *cmd2[], char *outfile);
 pid_t execute_child1(int fd[], char **cmd1, char *infile);
@@ -25,5 +24,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char const *s1, char const *s2);
 void	*ft_memmove(void *dest, const void *src, unsigned int n);
+void	ft_putstr_fd(char *s, int fd);
 
 #endif

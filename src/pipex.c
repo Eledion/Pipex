@@ -20,15 +20,13 @@ void pipex(char *infile, char *cmd1[], char *cmd2[], char *outfile)
 
     if (pipe(fd) == -1)
     {
-        perror("Error creando pipe");
+        perror("Error creating pipe");
         exit(EXIT_FAILURE);
     }
     pid1 = execute_child1(fd, cmd1, infile);
     pid2 = execute_child2(fd, cmd2, outfile);
-
     close(fd[0]);
     close(fd[1]);
-
-    waitpid(pid1, NULL, 0);  // 🔹 Corrección: Usa `waitpid()` en lugar de `wait()`
+    waitpid(pid1, NULL, 0);
     waitpid(pid2, NULL, 0);
 }

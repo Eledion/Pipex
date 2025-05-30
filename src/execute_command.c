@@ -31,26 +31,30 @@ static void remove_quotes(char **tokens)
     }
 }
 
-void execute_command(char **args, char **envp)
+char **prepare_command(char **args)
 {
     if (!args || !args[0])
     {
-        ft_printf("Error: No command provided\n", 2);
+        ft_putstr_fd("Error: No command provided\n", 2);
         exit(EXIT_FAILURE);
     }
-
-    // Separa el comando en tokens usando ft_split (no controlamos su implementación interna)
     char **cmd_args = ft_split(args[0], ' ');
     if (!cmd_args)
     {
-        ft_printf("Error: Failed to split command\n", 2);
+        ft_putstr_fd("Error: Failed to split command\n", 2);
         exit(EXIT_FAILURE);
     }
     remove_quotes(cmd_args);
+    return cmd_args;
+}
+
+char *get_command_path(char **cmd_args)
+{
     char *cmd_path = find_path(cmd_args[0]);
+
     if (!cmd_path)
     {
-        ft_printf("Error: Command not found -> %s\n", cmd_args[0], 2);
+        ft_putstr_fd("Error: Command not found \n", 2);
         int i = 0;
         while (cmd_args[i] != NULL)
         {
@@ -60,17 +64,16 @@ void execute_command(char **args, char **envp)
         free(cmd_args);
         exit(EXIT_FAILURE);
     }
-    int i = 0;
-    while (cmd_args[i] != NULL)
-    {
-        ft_printf("cmd_args[%d]: %s\n", i, cmd_args[i]);
-        i++;
-    }
+    return cmd_path;
+}
 
-    // Ejecutar el comando
+void execute_command(char **args, char **envp)
+{
+    char **cmd_args = prepare_command(args);
+    char *cmd_path = get_command_path(cmd_args);
     if (execve(cmd_path, cmd_args, envp) == -1)
     {
-        perror("Error en execve");
+        perror("Error in execve");
         free(cmd_path);
         int j = 0;
         while (cmd_args[j] != NULL)
