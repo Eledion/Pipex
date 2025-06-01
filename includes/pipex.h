@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/31 10:31:34 by marvin            #+#    #+#             */
+/*   Updated: 2025/05/31 10:31:34 by marvin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PIPEX_H
 # define PIPEX_H
 
@@ -6,16 +18,14 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <sys/wait.h>
-# include <string.h>
 # include <errno.h>
 
-
-void    pipex(char *infile, char *cmd1[], char *cmd2[], char *outfile);
-pid_t execute_child1(int fd[], char **cmd1, char *infile);
-pid_t execute_child2(int fd[], char **cmd2, char *outfile);
-void execute_command(char **args, char **envp);
-char    *find_path(char *cmd);
-char    **get_paths_from_env();
+void	pipex(char *infile, char *cmd1[], char *cmd2[], char *outfile);
+pid_t	execute_child1(int fd[], char **cmd1, char *infile);
+pid_t	execute_child2(int fd[], char **cmd2, char *outfile);
+void	execute_command(char **args, char **envp);
+char	*find_path(char *cmd);
+char	**get_paths_from_env(void);
 
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 char	**ft_split(char const *s, char c);
