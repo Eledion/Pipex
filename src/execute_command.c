@@ -53,12 +53,12 @@ char	**prepare_command(char **args)
 	return (cmd_args);
 }
 
-char	*get_command_path(char **cmd_args)
+char	*get_command_path(char **cmd_args, char **envp)
 {
 	char	*cmd_path;
 	int		i;
 
-	cmd_path = find_path(cmd_args[0]);
+	cmd_path = find_path(cmd_args[0], envp);
 	if (!cmd_path)
 	{
 		ft_putstr_fd("Error: Command not found \n", 2);
@@ -82,7 +82,7 @@ void	execute_command(char **args, char **envp)
 
 	j = 0;
 	cmd_args = prepare_command(args);
-	cmd_path = get_command_path(cmd_args);
+	cmd_path = get_command_path(cmd_args, envp);
 	if (execve(cmd_path, cmd_args, envp) == -1)
 	{
 		perror("Error in execve");

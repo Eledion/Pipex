@@ -37,9 +37,8 @@ void	setup_child2(int fd[], char *outfile)
 	close(fd_out);
 }
 
-pid_t	execute_child2(int fd[], char **cmd2, char *outfile)
+pid_t	execute_child2(int fd[], char **cmd2, char *outfile, char **envp)
 {
-	extern char	**environ;
 	pid_t		pid2;
 
 	pid2 = fork();
@@ -51,7 +50,7 @@ pid_t	execute_child2(int fd[], char **cmd2, char *outfile)
 	if (pid2 == 0)
 	{
 		setup_child2(fd, outfile);
-		execute_command(cmd2, environ);
+		execute_command(cmd2, envp);
 		perror("Error in execve (second child)");
 		exit(EXIT_FAILURE);
 	}

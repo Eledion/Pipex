@@ -12,7 +12,7 @@
 
 #include "pipex.h"
 
-void	pipex(char *infile, char *cmd1[], char *cmd2[], char *outfile)
+void	pipex(char *files[], char *cmd1[], char *cmd2[], char **envp)
 {
 	int		fd[2];
 	pid_t	pid1;
@@ -23,8 +23,8 @@ void	pipex(char *infile, char *cmd1[], char *cmd2[], char *outfile)
 		perror("Error creating pipe");
 		exit(EXIT_FAILURE);
 	}
-	pid1 = execute_child1(fd, cmd1, infile);
-	pid2 = execute_child2(fd, cmd2, outfile);
+	pid1 = execute_child1(fd, cmd1, files[0], envp);
+	pid2 = execute_child2(fd, cmd2, files[1], envp);
 	close(fd[0]);
 	close(fd[1]);
 	waitpid(pid1, NULL, 0);

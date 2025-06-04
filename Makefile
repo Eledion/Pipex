@@ -14,7 +14,8 @@ SRC_FILES = src/execute_command.c src/execute_child1.c src/execute_child2.c \
 
 # Archivos fuente de utils
 UTILS_FILES = utils/ft_split.c utils/ft_strjoin.c utils/ft_strlen.c utils/ft_strdup.c \
-              utils/ft_memcpy.c utils/ft_memmove.c utils/ft_substr.c utils/ft_putstr_fd.c
+              utils/ft_memcpy.c utils/ft_memmove.c utils/ft_substr.c utils/ft_putstr_fd.c \
+			  utils/ft_strncmp.c
 
 # Archivos objeto generados en obj/
 OBJ_FILES_SRC = $(patsubst src/%.c, $(OBJ_DIR)/src/%.o, $(SRC_FILES))

@@ -12,11 +12,34 @@
 
 #include "pipex.h"
 
-char	**get_paths_from_env(void)
+char	*my_getenv(char *name, char **env)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while (env[i])
+	{
+		j = 0;
+		while (env[i][j] && env[i][j] != '=')
+			j++;
+		if (ft_strncmp(env[i], name, j) == 0 && env[i][j] == '=')
+			return (env[i] + j + 1);
+		i++;
+	}
+	return (NULL);
+}
+
+char	**get_paths_from_env(char **envp)
 {
 	char	*path_env;
 
-	path_env = getenv("PATH");
+	if (!envp)
+	{
+		ft_putstr_fd("Error: envp is NULL\n", 2);
+		return (NULL);
+	}
+	path_env = my_getenv("PATH", envp);
 	if (!path_env)
 	{
 		ft_putstr_fd("Error: PATH variable missing\n", 2);
@@ -63,11 +86,11 @@ char	*search_command_in_paths(char *cmd, char **paths)
 	return (NULL);
 }
 
-char	*find_path(char *cmd)
+char	*find_path(char *cmd, char **envp)
 {
 	char	**paths;
 
-	paths = get_paths_from_env();
+	paths = get_paths_from_env(envp);
 	if (!cmd || !cmd[0])
 		return (NULL);
 	if (!paths)

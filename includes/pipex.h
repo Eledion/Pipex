@@ -20,13 +20,14 @@
 # include <sys/wait.h>
 # include <errno.h>
 
-void	pipex(char *infile, char *cmd1[], char *cmd2[], char *outfile);
-pid_t	execute_child1(int fd[], char **cmd1, char *infile);
-pid_t	execute_child2(int fd[], char **cmd2, char *outfile);
+void	pipex(char *files[], char *cmd1[], char *cmd2[], char **envp);
+pid_t	execute_child1(int fd[], char **cmd1, char *infile, char **envp);
+pid_t	execute_child2(int fd[], char **cmd2, char *outfile, char **envp);
 void	execute_command(char **args, char **envp);
-char	*find_path(char *cmd);
-char	**get_paths_from_env(void);
+char	*find_path(char *cmd, char **envp);
+char	**get_paths_from_env(char **envp);
 
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 char	**ft_split(char const *s, char c);
 char	*ft_strdup(const char *s);
