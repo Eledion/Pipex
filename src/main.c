@@ -29,5 +29,10 @@ int	main(int argc, char **argv, char **envp)
 	cmd1[1] = NULL;
 	cmd2[0] = argv[3];
 	cmd2[1] = NULL;
+	if (!cmd1[0] || !cmd2[0] || !*cmd1[0] || !*cmd2[0])
+	{
+		ft_putstr_fd("Error: No valid command\n", 2);
+		exit(EXIT_FAILURE);
+	}
 	pipex(files, cmd1, cmd2, envp);
 }

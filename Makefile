@@ -1,80 +1,80 @@
-# Definición del compilador y opciones
+# Compiler definition and options
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -I includes -I printf -I utils
 
-# Carpeta principal de objetos
+# Main object directory
 OBJ_DIR = obj
 
-# Subdirectorios dentro de obj
+# Subdirectories within obj
 OBJ_SUBDIRS = $(OBJ_DIR)/src $(OBJ_DIR)/utils
 
-# Archivos fuente de Pipex
+# Pipex source files
 SRC_FILES = src/execute_command.c src/execute_child1.c src/execute_child2.c \
             src/pipex.c src/main.c src/find_path.c
 
-# Archivos fuente de utils
+# Utils source files
 UTILS_FILES = utils/ft_split.c utils/ft_strjoin.c utils/ft_strlen.c utils/ft_strdup.c \
               utils/ft_memcpy.c utils/ft_memmove.c utils/ft_substr.c utils/ft_putstr_fd.c \
 			  utils/ft_strncmp.c
 
-# Archivos objeto generados en obj/
+# Object files generated in obj/
 OBJ_FILES_SRC = $(patsubst src/%.c, $(OBJ_DIR)/src/%.o, $(SRC_FILES))
 OBJ_FILES_UTILS = $(patsubst utils/%.c, $(OBJ_DIR)/utils/%.o, $(UTILS_FILES))
 OBJS = $(OBJ_FILES_SRC) $(OBJ_FILES_UTILS)
 
-# Nombre del ejecutable
+# Executable name
 NAME = pipex
 
-# Regla por defecto: compilar Pipex solo si hay cambios
+# Default rule: compile Pipex only if there are changes
 all: check_changes $(NAME)
 
-# Comprobar si hay archivos desactualizados antes de mostrar el banner
+# Check if there are outdated files before displaying the banner
 check_changes:
 	@if ! $(MAKE) --question $(NAME); then \
 		echo "==========================================="; \
-		echo " 🚀 PIPEX - PROCESO DE COMPILACIÓN 🚀"; \
+		echo " 🚀 PIPEX - COMPILATION PROCESS 🚀"; \
 		echo "-------------------------------------------"; \
-		echo " 🔧 Proyecto: Pipex"; \
-		echo " 🏆 Desarrollador: DANOGUER "; \
-		echo " 📅 Fecha: `date +'%d-%m-%Y %H:%M'`"; \
+		echo " 🔧 Project: Pipex"; \
+		echo " 🏆 Developer: DANOGUER "; \
+		echo " 📅 Date: `date +'%d-%m-%Y %H:%M'`"; \
 		echo "==========================================="; \
 		echo ""; \
 	else \
-		echo "✅ No hay cambios. Todo está actualizado."; \
+		echo "✅ No changes detected. Everything is up to date."; \
 	fi
 
-# Crear carpeta obj y sus subdirectorios antes de compilar cualquier objeto
+# Create obj folder and its subdirectories before compiling any object files
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)/src $(OBJ_DIR)/utils
 
-# Regla para compilar Pipex
+# Rule to compile Pipex
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
-	@echo "✅ Compilación completada correctamente"
+	@echo "✅ Compilation completed successfully"
 
-# Regla para compilar archivos objeto en obj/src/
+# Rule to compile object files in obj/src/
 $(OBJ_DIR)/src/%.o: src/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Regla para compilar archivos objeto en obj/utils/
+# Rule to compile object files in obj/utils/
 $(OBJ_DIR)/utils/%.o: utils/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Limpiar archivos compilados
+# Clean compiled object files
 clean:
-	@echo "🧹 Limpiando archivos objeto..."
+	@echo "🧹 Cleaning object files..."
 	rm -f $(OBJS)
-	@echo "✅ Limpieza completada con éxito."
+	@echo "✅ Cleanup completed successfully."
 
-# Limpiar todo, incluyendo el binario y la carpeta obj/
+# Clean everything, including the binary and the obj/ folder
 fclean: clean
-	@echo "🗑️ Eliminando ejecutable y carpeta de compilación..."
+	@echo "🗑️ Removing executable and compilation folder..."
 	rm -f $(NAME)
 	rm -rf $(OBJ_DIR)
-	@echo "✅ Fclean completado. Proyecto listo para recompilar desde cero."
+	@echo "✅ Fclean completed. Project ready for a fresh compilation."
 	
-# Recompilar desde cero
+# Recompile from scratch
 re: fclean all
 
-# PHONY para evitar conflictos con nombres de archivos
+# PHONY to prevent conflicts with file names
 .PHONY: all clean fclean re check_changes

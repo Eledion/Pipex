@@ -34,7 +34,7 @@ static void	remove_quotes(char **tokens)
 	}
 }
 
-char	**prepare_command(char **args)
+static char	**prepare_command(char **args)
 {
 	char	**cmd_args;
 
@@ -53,7 +53,7 @@ char	**prepare_command(char **args)
 	return (cmd_args);
 }
 
-char	*get_command_path(char **cmd_args, char **envp)
+static char	*get_command_path(char **cmd_args, char **envp)
 {
 	char	*cmd_path;
 	int		i;

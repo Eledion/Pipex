@@ -24,9 +24,9 @@ void	pipex(char *files[], char *cmd1[], char *cmd2[], char **envp)
 		exit(EXIT_FAILURE);
 	}
 	pid1 = execute_child1(fd, cmd1, files[0], envp);
+	close(fd[1]);
 	pid2 = execute_child2(fd, cmd2, files[1], envp);
 	close(fd[0]);
-	close(fd[1]);
 	waitpid(pid1, NULL, 0);
 	waitpid(pid2, NULL, 0);
 }

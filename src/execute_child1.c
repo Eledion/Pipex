@@ -12,7 +12,7 @@
 
 #include "pipex.h"
 
-void	setup_child1(int fd[], char *infile)
+static void	setup_child1(int fd[], char *infile)
 {
 	int	fd_in;
 

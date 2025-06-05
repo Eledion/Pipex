@@ -12,7 +12,7 @@
 
 #include "pipex.h"
 
-char	*my_getenv(char *name, char **env)
+static char	*my_getenv(char *name, char **env)
 {
 	int		i;
 	int		j;
@@ -30,7 +30,7 @@ char	*my_getenv(char *name, char **env)
 	return (NULL);
 }
 
-char	**get_paths_from_env(char **envp)
+static char	**get_paths_from_env(char **envp)
 {
 	char	*path_env;
 
@@ -48,7 +48,7 @@ char	**get_paths_from_env(char **envp)
 	return (ft_split(path_env, ':'));
 }
 
-char	*find_executable_path(char *directory, char *cmd)
+static char	*find_executable_path(char *directory, char *cmd)
 {
 	char	*temp;
 	char	*path;
@@ -62,7 +62,7 @@ char	*find_executable_path(char *directory, char *cmd)
 	return (NULL);
 }
 
-char	*search_command_in_paths(char *cmd, char **paths)
+static char	*search_command_in_paths(char *cmd, char **paths)
 {
 	char	*path;
 	int		i;
